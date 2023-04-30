@@ -14,6 +14,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+      
+    - name: Uninstall golang 1.13
+      run: sudo apt-get remove golang-go
+
+    - name: Install golang 1.18
+      run: |
+        sudo add-apt-repository ppa:longsleep/golang-backports
+        sudo apt-get update
+        sudo apt-get install golang-1.18
+
+    - name: Set PATH environment variable
+      run: export PATH="/usr/lib/go-1.18/bin:$PATH"
+   
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -22,7 +35,7 @@ jobs:
         sudo apt full-upgrade -y
         sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot \
         cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
-        pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget golang
+        pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
     - name: Clone source code
       env:
         KERNEL: 3.4
